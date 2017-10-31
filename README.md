@@ -2,7 +2,7 @@
 :baby_chick: Other code and things for twitter.
 
 #### twitter_app_resources.py
-
+```python (2.7)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
 ```sh
 $ python twitter_app_resources.py
 +--------------------------------+-------------------------+-------+-----------+
