@@ -6,6 +6,7 @@
 import os
 import sys
 import datetime
+import argparse
 import tweepy
 import prettytable
 
@@ -25,7 +26,7 @@ def format_resource_row(resource_name, reset_time, resource_limit, resource_rema
 
     return [str(resource_name), reset_time, str(resource_limit), str(resource_remaining)]
 
-def print_app_resources(tweepy_api, only_used_resources=True):
+def print_app_resources(tweepy_api, all_resources=False):
     """ prints a table of app resource information. """
 
     api_rate_limits = get_app_resources(tweepy_api)
@@ -36,7 +37,7 @@ def print_app_resources(tweepy_api, only_used_resources=True):
     for attr, value in api_rate_limits['resources'].iteritems():
         for sattr, svalue in api_rate_limits['resources'][attr].iteritems():
 
-            if only_used_resources:
+            if not all_resources:
                 # only print resources that have been used (not full)
                 if svalue['limit'] != svalue['remaining']:
                     rate_limits_table.add_row(format_resource_row(sattr, svalue['reset'], svalue['limit'],
@@ -47,23 +48,35 @@ def print_app_resources(tweepy_api, only_used_resources=True):
 
     print rate_limits_table
 
-def main():
-    """ twitter api resource information. """
+def get_arguments():
+    parser = argparse.ArgumentParser(description='print twitter app api resource usage.')
+    parser.add_argument('-a', '--all', help="print list of all resources even if unused", \
+                         required=False, action='store_true')
 
+    args = parser.parse_args()
+
+    return args
+
+def main():
     app_consumer_key = os.environ.get('TWITTER_CONSUMER_KEY', 'None')
     app_consumer_secret = os.environ.get('TWITTER_CONSUMER_SECRET', 'None')
     app_access_key = os.environ.get('TWITTER_ACCESS_KEY', 'None')
     app_access_secret = os.environ.get('TWITTER_ACCESS_SECRET', 'None')
 
-    auth = tweepy.OAuthHandler(app_consumer_key, app_consumer_secret)
-    auth.set_access_token(app_access_key, app_access_secret)
+    user_args = get_arguments()
 
-    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True,
-                     compression=True)
+    try:
+        auth = tweepy.OAuthHandler(app_consumer_key, app_consumer_secret)
+        auth.set_access_token(app_access_key, app_access_secret)
 
-    print_app_resources(api)
-    #print_app_resources(api, False)
-    #print get_app_resources(api)
+        api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True,
+                         compression=True)
+
+    except tweepy.TweepError as err:
+        print "tweepy.get_user error: " + str(err.message)
+        sys.exit()
+
+    print_app_resources(api, user_args.all)
 
 if __name__ == '__main__':
     main()
