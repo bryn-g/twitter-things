@@ -14,7 +14,7 @@ $ python twitter_app_resources.py
 | /users/show/:id                | 2017-10-31 05:02:03 UTC | 900   | 897       |
 +--------------------------------+-------------------------+-------+-----------+
 ```
-### twitter_friendship.py
+#### twitter_friendship.py
 ```python (2.7)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
 ```sh
 $ python twitter_friendship.py @halsey @katyperry
