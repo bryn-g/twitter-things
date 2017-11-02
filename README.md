@@ -15,19 +15,31 @@ $ python twitter_app_resources.py
 +--------------------------------+-------------------------+-------+-----------+
 ```
 ### twitter_friendship.py
-```python (2.7)``` ```tweepy (3.5.0)```
+```python (2.7)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
 ```sh
 $ python twitter_friendship.py @halsey @katyperry
-friendship status of users:
-* both @halsey and @katyperry are following each other.
+twitter friendship status of users:
++--------------------+----------------------------+-----------------------+---------+
+| user               | relationship               | other user            | friends |
++--------------------+----------------------------+-----------------------+---------+
+| @halsey (45709328) | follows and is followed by | @katyperry (21447363) | yes     |
++--------------------+----------------------------+-----------------------+---------+
 
 $ python twitter_friendship.py @taylorswift13 @halsey
-friendship status of users:
-* neither @taylorswift13 or @halsey are following each other.
+twitter friendship status of users:
++---------------------------+---------------------------------+--------------------+---------+
+| user                      | relationship                    | other user         | friends |
++---------------------------+---------------------------------+--------------------+---------+
+| @taylorswift13 (17919972) | is not following or followed by | @halsey (45709328) | no      |
++---------------------------+---------------------------------+--------------------+---------+
 
 $ python twitter_friendship.py @taylorswift13 @gracehelbig
-friendship status of users:
-* @gracehelbig is following @taylorswift13 only.
+twitter friendship status of users:
++-------------------------+-------------------+---------------------------+---------+
+| user                    | relationship      | other user                | friends |
++-------------------------+-------------------+---------------------------+---------+
+| @gracehelbig (21502768) | is only following | @taylorswift13 (17919972) | no      |
++-------------------------+-------------------+---------------------------+---------+
 ```
 ```ruby
 end.
