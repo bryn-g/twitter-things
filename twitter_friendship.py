@@ -35,23 +35,24 @@ def get_follow_status(tweepy_api, user_id, other_user_id):
         friendship = tweepy_api.show_friendship(user.id, user.screen_name, \
                                                 other_user.id, other_user.screen_name)
 
-        # return id and screen name (since we have them) and following other status
-        return ([user.id, user.screen_name, friendship[0].following], \
-                [other_user.id, other_user.screen_name, friendship[1].following])
+        # return user objects (since we have them) and friendship tuple
+        return ([user, other_user, friendship])
 
     except tweepy.TweepError as err:
         print "tweepy error: " + str(err.message)
         sys.exit()
 
-# follow_status is a tuple of two lists [user_id, user_screen_name, following_other_status]
+# follow_status is a tuple ([user_object, other_user_object, friendship_tuple])
 def print_follow_status(follow_status):
 
-    user_status, other_user_status = follow_status
-    user_following, other_user_following = user_status[2], other_user_status[2]
+    user, other_user, friendship = follow_status
+
+    user_following = friendship[0].following
+    other_user_following = friendship[1].following
 
     # format user id strings for print
-    user = "@" + str(user_status[1]) + " (" + str(user_status[0]) + ")"
-    other_user = "@" + str(other_user_status[1]) + " (" + str(other_user_status[0]) + ")"
+    user_str = "@" + str(user.screen_name) + " (" + str(user.id) + ")"
+    other_user_str = "@" + str(other_user.screen_name) + " (" + str(other_user.id) + ")"
 
     print "twitter friendship status of users:"
 
@@ -59,16 +60,16 @@ def print_follow_status(follow_status):
     friendship_table.align = "l"
 
     if (user_following == True and other_user_following == True):
-        friendship_table.add_row([user, "follows and is followed by", other_user, "yes"])
+        friendship_table.add_row([user_str, "follows and is followed by", other_user_str, "yes"])
 
     elif (user_following == False and other_user_following == True):
-        friendship_table.add_row([other_user, "is only following", user, "no"])
+        friendship_table.add_row([other_user_str, "is only following", user_str, "no"])
 
     elif (user_following == True and other_user_following == False):
-        friendship_table.add_row([user, "is only following", other_user, "no"])
+        friendship_table.add_row([user_str, "is only following", other_user_str, "no"])
 
     else:
-        friendship_table.add_row([user, "is not following or followed by", other_user, "no"])
+        friendship_table.add_row([user_str, "is not following or followed by", other_user_str, "no"])
 
     print friendship_table
 
