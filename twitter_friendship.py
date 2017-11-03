@@ -110,5 +110,7 @@ def main():
 
     print_follow_status(follow_status)
 
+    print "end."
+
 if __name__ == '__main__':
     main()
