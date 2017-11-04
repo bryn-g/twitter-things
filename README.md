@@ -1,8 +1,28 @@
 # twitter-things
 :baby_chick: Other code and things for twitter.
 
+#### twitter_user.py
+```python (2.7, 3.6)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
+```sh
+$ python twitter_user.py -u @halsey
++------------------------------------+----------------------------------------+
+| Attribute                          | Value                                  |
++------------------------------------+----------------------------------------+
+| contributors_enabled               | False                                  |
+| created_at                         | 2009-06-08 23:58:35                    |
+| default_profile                    | False                                  |
+| default_profile_image              | False                                  |
+| description                        | true, I talk of dreams. which are the .|
+| favourites_count                   | 4716                                   |
+| follow_request_sent                | False                                  |
+| followers_count                    | 6839030                                |
+| following                          | False                                  |
+| friends_count                      | 2948                                   |
+...
+```
+
 #### twitter_app_resources.py
-```python (2.7)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
+```python (2.7, 3.6)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
 ```sh
 $ python twitter_app_resources.py
 +--------------------------------+-------------------------+-------+-----------+
@@ -15,7 +35,7 @@ $ python twitter_app_resources.py
 +--------------------------------+-------------------------+-------+-----------+
 ```
 #### twitter_friendship.py
-```python (2.7)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
+```python (2.7, 3.6)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
 ```sh
 $ python twitter_friendship.py @halsey @katyperry
 twitter friendship status of users:
