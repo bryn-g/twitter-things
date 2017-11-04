@@ -24,6 +24,13 @@ $ python twitter_user.py -u @halsey
 #### twitter_app_resources.py
 ```python (2.7, 3.6)``` ```tweepy (3.5.0)``` ```prettytable (0.7.2)```
 ```sh
+usage: twitter_app_resources.py [-h] [-a] [-l]
+
+optional arguments:
+  -h, --help   show this help message and exit
+  -a, --all    print list of all resources even if unused
+  -l, --local  print reset time as local instead of utc
+  
 $ python twitter_app_resources.py
 +--------------------------------+-------------------------+-------+-----------+
 | twitter api resource           | reset                   | limit | remaining |
