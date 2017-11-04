@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import os
 import sys
 import argparse
@@ -26,7 +29,7 @@ def valid_twitter_user(user_id):
 
         return user_id
 
-def get_follow_status(tweepy_api, user_id, other_user_id):
+def get_friendship(tweepy_api, user_id, other_user_id):
     try:
         user = tweepy_api.get_user(user_id)
         other_user = tweepy_api.get_user(other_user_id)
@@ -39,13 +42,13 @@ def get_follow_status(tweepy_api, user_id, other_user_id):
         return ([user, other_user, friendship])
 
     except tweepy.TweepError as err:
-        print "tweepy error: " + str(err.message)
+        print ("tweepy error: ", err)
         sys.exit()
 
-# follow_status is a tuple ([user_object, other_user_object, friendship_tuple])
-def print_follow_status(follow_status):
+# friendship_status is a tuple ([user_object, other_user_object, friendship_tuple])
+def print_friendship_status(friendship_status):
 
-    user, other_user, friendship = follow_status
+    user, other_user, friendship = friendship_status
 
     user_following = friendship[0].following
     other_user_following = friendship[1].following
@@ -54,7 +57,7 @@ def print_follow_status(follow_status):
     user_str = "@" + str(user.screen_name) + " (" + str(user.id) + ")"
     other_user_str = "@" + str(other_user.screen_name) + " (" + str(other_user.id) + ")"
 
-    print "twitter friendship status of users:"
+    print ("twitter friendship status of users:")
 
     friendship_table = prettytable.PrettyTable(["user", "relationship", "other user", "friends"], header=True)
     friendship_table.align = "l"
@@ -71,7 +74,7 @@ def print_follow_status(follow_status):
     else:
         friendship_table.add_row([user_str, "is not following or followed by", other_user_str, "no"])
 
-    print friendship_table
+    print (friendship_table)
 
 def get_arguments():
     parser = argparse.ArgumentParser(description='print the twitter friendship status of two users.')
@@ -88,9 +91,6 @@ def main():
     app_access_key = os.environ.get('TWITTER_ACCESS_KEY', 'None')
     app_access_secret = os.environ.get('TWITTER_ACCESS_SECRET', 'None')
 
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
-
     user_args = get_arguments()
     user_id, other_user_id = user_args.users
 
@@ -102,15 +102,15 @@ def main():
                                 compression=True)
 
     except tweepy.TweepError as err:
-        print "tweepy error: " + str(err.message)
+        print ("tweepy error: ", err)
         sys.exit()
 
     # returns a tuple
-    follow_status = get_follow_status(tweepy_api, user_id, other_user_id)
+    friendship_status = get_friendship(tweepy_api, user_id, other_user_id)
 
-    print_follow_status(follow_status)
+    print_friendship_status(friendship_status)
 
-    print "end."
+    print ("end.")
 
 if __name__ == '__main__':
     main()

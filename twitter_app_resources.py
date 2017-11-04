@@ -1,7 +1,7 @@
 """ twitter api app resources using tweepy wrapper. """
 
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 import os
 import sys
@@ -16,7 +16,7 @@ def get_app_resources(tweepy_api):
         api_rate_limits = tweepy_api.rate_limit_status()
 
     except tweepy.TweepError as err:
-        print "tweepy_api.rate_limit_status error: " + str(err.message)
+        print ("tweepy_api.rate_limit_status error: ", err)
         sys.exit()
 
     return api_rate_limits
@@ -47,8 +47,12 @@ def print_app_resources(tweepy_api, print_all_resources=False, print_local_time=
     rate_limits_table = prettytable.PrettyTable(["twitter api resource", "reset time", "limit", "remaining"])
     rate_limits_table.align = "l"
 
-    for attr, value in api_rate_limits['resources'].iteritems():
-        for sattr, svalue in api_rate_limits['resources'][attr].iteritems():
+    # python 2.7 only
+    #for attr, value in api_rate_limits['resources'].iteritems():
+    #   for sattr, svalue in api_rate_limits['resources'][attr].iteritems():
+
+    for attr, value in iter(api_rate_limits['resources'].items()):
+        for sattr, svalue in iter(api_rate_limits['resources'][attr].items()):
 
             row = format_resource_row(sattr, svalue['reset'], svalue['limit'], svalue['remaining'], print_local_time)
 
@@ -59,7 +63,7 @@ def print_app_resources(tweepy_api, print_all_resources=False, print_local_time=
             else:
                 rate_limits_table.add_row(row)
 
-    print rate_limits_table
+    print (rate_limits_table)
 
 def get_arguments():
     parser = argparse.ArgumentParser(description='print twitter app api resource usage.')
@@ -88,12 +92,12 @@ def main():
                          compression=True)
 
     except tweepy.TweepError as err:
-        print "tweepy.get_user error: " + str(err.message)
+        print ("tweepy.get_user error: ", err)
         sys.exit()
 
     print_app_resources(api, user_args.all, user_args.local)
 
-    print "end."
+    print ("end.")
 
 if __name__ == '__main__':
     main()
