@@ -42,7 +42,7 @@ def get_friendship(tweepy_api, user_id, other_user_id):
         return ([user, other_user, friendship])
 
     except tweepy.TweepError as err:
-        print ("tweepy error: ", err)
+        print("tweepy error: ", err)
         sys.exit()
 
 # friendship_status is a tuple ([user_object, other_user_object, friendship_tuple])
@@ -57,27 +57,30 @@ def print_friendship_status(friendship_status):
     user_str = "@" + str(user.screen_name) + " (" + str(user.id) + ")"
     other_user_str = "@" + str(other_user.screen_name) + " (" + str(other_user.id) + ")"
 
-    print ("twitter friendship status of users:")
+    print("twitter friendship status of users:")
 
-    friendship_table = prettytable.PrettyTable(["user", "relationship", "other user", "friends"], header=True)
+    friendship_table = prettytable.PrettyTable(["user", "relationship", "other user", \
+                                                "friends"], header=True)
     friendship_table.align = "l"
 
-    if (user_following == True and other_user_following == True):
+    if user_following is True and other_user_following is True:
         friendship_table.add_row([user_str, "follows and is followed by", other_user_str, "yes"])
 
-    elif (user_following == False and other_user_following == True):
+    elif user_following is False and other_user_following is True:
         friendship_table.add_row([other_user_str, "is only following", user_str, "no"])
 
-    elif (user_following == True and other_user_following == False):
+    elif user_following is True and other_user_following is False:
         friendship_table.add_row([user_str, "is only following", other_user_str, "no"])
 
     else:
-        friendship_table.add_row([user_str, "is not following or followed by", other_user_str, "no"])
+        friendship_table.add_row([user_str, "is not following or followed by", other_user_str, \
+                                  "no"])
 
-    print (friendship_table)
+    print(friendship_table)
 
 def get_arguments():
-    parser = argparse.ArgumentParser(description='print the twitter friendship status of two users.')
+    parser = argparse.ArgumentParser(description='print the twitter friendship status of '\
+                                                  'two users.')
     parser.add_argument('users', metavar='@user', type=valid_twitter_user, nargs=2,
                         help='twitter user @name or id')
 
@@ -102,7 +105,7 @@ def main():
                                 compression=True)
 
     except tweepy.TweepError as err:
-        print ("tweepy error: ", err)
+        print("tweepy error: ", err)
         sys.exit()
 
     # returns a tuple
@@ -110,7 +113,7 @@ def main():
 
     print_friendship_status(friendship_status)
 
-    print ("end.")
+    print("end.")
 
 if __name__ == '__main__':
     main()

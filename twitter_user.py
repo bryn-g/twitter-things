@@ -5,13 +5,10 @@ from __future__ import unicode_literals
 
 import os
 import sys
-import collections
 import argparse
-import re
-import json
+import textwrap
 import tweepy
 import prettytable
-import textwrap
 
 def insert_newlines(in_string, line_length):
     in_string = textwrap.fill(in_string, line_length)
@@ -48,7 +45,7 @@ def is_dict(item):
 
     return False
 
-def insert_into_table(table, item, exclude_attributes, attr_line_length, value_line_length):
+def insert_into_table(table, item, attr_line_length, value_line_length):
     if item:
         if hasattr(item, '__dict__'):
             item = item.__dict__
@@ -74,6 +71,7 @@ def print_user_details(user, attr_line_length=40, value_line_length=80):
         if attr not in exclude_attributes:
             if is_dict(value):
                 attr_temp = attr
+                k = 0
                 while attr_temp in extended_attributes:
                     attr_temp = attr_temp + "_" + str(k)
                     k += 1
@@ -86,7 +84,7 @@ def print_user_details(user, attr_line_length=40, value_line_length=80):
                 user_details_table.add_row([attr, value])
 
     user_details_table.sortby = "Attribute"
-    print (user_details_table)
+    print(user_details_table)
 
     #exit()
 
@@ -96,11 +94,11 @@ def print_user_details(user, attr_line_length=40, value_line_length=80):
         user_details_table.align = "l"
 
         user_details_table = insert_into_table(user_details_table, {attr: value}, \
-                                               exclude_attributes, attr_line_length, value_line_length)
+                                               attr_line_length, value_line_length)
 
         user_details_table.sortby = "Attribute"
 
-        print (user_details_table)
+        print(user_details_table)
 
 def get_arguments():
     parser = argparse.ArgumentParser(description='prints twitter user details.')
@@ -127,13 +125,13 @@ def main():
         tweepy_api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, \
             compression=True)
     except tweepy.TweepError as err:
-        print ("tweepy.get_user error: ", err)
+        print("tweepy.get_user error: ", err)
         sys.exit()
 
     try:
         twitter_user = tweepy_api.get_user(user_args.user)
     except tweepy.TweepError as err:
-        print ("tweepy.get_user error: ", err)
+        print("tweepy.get_user error: ", err)
         sys.exit()
 
     attr_line_length = 60
@@ -141,7 +139,7 @@ def main():
 
     print_user_details(twitter_user, attr_line_length, value_line_length)
 
-    print ("end.")
+    print("end.")
 
 if __name__ == '__main__':
     main()
